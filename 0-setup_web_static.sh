@@ -1,47 +1,33 @@
-#!/usr/bin/python3
-#  sets up your web servers for the deployment of web_static.
+#!/usr/bin/env bash
+# sets up your web servers for the deployment of web_static.
 
-#installing Nginx
-apt-get update
-apt-get install nginx -y
+# installing Nginx
+sudo apt-get update
+sudo apt-get install nginx -y
+sudo ufw allow 'Nginx HTTP'
 
-#create a folder 
-mkdir -p data/web_static/releases/test/
-mkdir -p /data/web_static/shared/
+#create a folder
+sudo mkdir -p /data/web_static/releases/test/
+sudo mkdir -p /data/web_static/shared/
 
 #create a fake HTML file
-echo "Holberton School" > /data/web_static/releases/test/index.html
+sudo touch /data/web_static/releases/test/index.html
+sudo echo "<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>" | sudo tee /data/web_static/releases/test/index.html
 
 #create a symbolic link /data/web_static/current linked to folder
-ln -sf /data/web_static/releases/test/ /data/web_static/current
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 # give ownership of /data/ folder to ubuntu user and group
-chown -R ubuntu /data/
-chgrp -R ubuntu /data/
+sudo chown -R ubuntu:ubuntu /data/
 
 # update nginx config and restart use alias
-printf %s "server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    add_header X-Served-By $HOSTNAME;
-    root   /var/www/html;
-    index  index.html index.htm;
+sudo sed -i '/listen 80 default_server/a location /hbnb_static { alias /data/web_static/current/;}' /etc/nginx/sites-enabled/default
 
-    location /hbnb_static {
-        alias /data/web_static/current;
-        index index.html index.htm;
-    }
-
-    location /redirect_me {
-        return 301 http://cuberule.com/;
-    }
-
-    error_page 404 /404.html;
-    location /404 {
-      root /var/www/html;
-      internal;
-    }
-}" > /etc/nginx/sites-available/default
-
-# restart server
-service nginx restart
+# restart
+sudo service nginx restart
