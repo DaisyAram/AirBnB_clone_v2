@@ -1,24 +1,27 @@
 #!/usr/bin/python3
-from flask import Flask
+"""starts flask web aplication"""
 
+
+from flask import Flask
 app = Flask(__name__)
+
 
 @app.route('/', strict_slashes=False)
 def hello_hbnb():
-   """ root route"""
-   return 'Hello HBNB!'
+    """prints hello hbn"""
+    return 'Hello HBNB!'
 
 
 @app.route('/hbnb', strict_slashes=False)
-def hnbn():
-   """ hbnb route"""
-   return 'HBNB'
+def hbnb():
+    """display “HBNB”"""
+    return 'HBNB'
 
 
 @app.route('/c/<text>', strict_slashes=False)
 def cisfun(text):
-   """c is fun"""
-   return 'C, {}'.format(text.replace('_', ' '))
+    """c is fun"""
+    return 'C, {}'.format(text.replace('_', ' '))
 
 
 if __name__ == '__main__':
