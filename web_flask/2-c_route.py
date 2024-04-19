@@ -19,9 +19,9 @@ def hbnb():
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def cisfun(text):
-    """c is fun"""
-    return 'C, {}'.format(text.replace('_', ' '))
+def c_is_fun(text):
+    """displays c is fun"""
+    return 'C ' + (text.replace('_', ' '))
 
 
 if __name__ == '__main__':
