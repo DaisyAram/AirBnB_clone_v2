@@ -2,8 +2,11 @@
 """starts a Flask web application"""
 
 from flask import Flask
-app = Flask(__name__)
+from flask import render_template
 
+app = Flask(__name__)
+app.jinja_env.trim_blocks = True
+app.jinja_env.lstrip_blocks = True
 
 @app.route('/', strict_slashes=False)
 def index():
@@ -45,11 +48,7 @@ def numbersandtemplates(n):
 @app.route('/number_odd_or_even/<int:n>', strict_slashes=False)
 def numbersandevenness(n):
     """display a HTML page only if n is an integer"""
-    if n % 2 == 0:
-        evenness = 'even'
-    else:
-        evenness = 'odd'
-    return render_template('6-number_odd_or_even.html', n=n, evenness=evenness)
+    return render_template('6-number_odd_or_even.html', n=n)
 
 
 if __name__ == '__main__':
